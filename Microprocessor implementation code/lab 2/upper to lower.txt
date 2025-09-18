@@ -1,0 +1,30 @@
+org 0100h
+.stack
+.data
+.code
+
+main proc
+    
+    ; Setup data segment
+    mov ax, @data
+    mov ds, ax
+
+    ; Read a single character from user input
+    mov ah, 1
+    int 21h
+    mov bl, al  ; Store input character in BL
+
+    ; Convert uppercase to lowercase by adding 32
+    add bl, 32
+
+    ; Output the converted lowercase character
+    mov ah, 2
+    mov dl, bl
+    int 21h
+
+    ; Exit program
+    mov ah, 4ch
+    int 21h
+
+main endp
+end main

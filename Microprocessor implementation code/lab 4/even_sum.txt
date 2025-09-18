@@ -1,0 +1,37 @@
+org 0100h
+.data
+n db ?             
+result dw 0        
+even db 2          
+
+.code 
+main proc
+    ; Initialize data segment
+    mov ax, @data
+    mov ds, ax
+    
+    ; Take input for the number of terms
+    mov ah, 1
+    int 21h
+    sub al, '0'      
+    mov n, al        
+
+    ; Initialize variables
+    xor ax, ax       
+    xor bx, bx       
+    mov cl, n        
+
+sum_even_loop:
+    mov al, even    
+    add bx, ax       
+    add even, 2      
+    loop sum_even_loop 
+
+    ; Store the result
+    mov result, bx   
+
+    ; Exit program
+    mov ah, 4ch
+    int 21h
+main endp
+end main

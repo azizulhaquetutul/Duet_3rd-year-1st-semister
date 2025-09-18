@@ -1,0 +1,41 @@
+org 100h
+.DATA ; Data segment starts
+message db 'THIS IS ARRAY:$' ;1-D array for
+string db ?
+.CODE ; Code segment starts
+MAIN PROC
+mov ax, @DATA
+mov ds, ax 
+ 
+ mov ah, 09h
+lea dx, message
+
+int 21h 
+
+;new line
+mov ah, 02h
+mov dl, 0Dh
+int 21h 
+mov dl, 0Ah
+int 21h 
+
+;conver the lowercase to uppercase
+mov cx, 17
+xor si, si
+TOP:
+cmp message[si],' '
+je next
+or message[si], 20h
+
+next:
+inc si
+loop top 
+
+lea dx, message
+mov ah, 09h ;display string function
+int 21h ;display message
+mov ah, 4ch
+int 21h
+MAIN ENDP
+END MAIN
+RET

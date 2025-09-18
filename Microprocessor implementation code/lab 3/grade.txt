@@ -1,0 +1,83 @@
+org 0100h
+.data
+marks db ?           ; Variable to store the input marks
+grade db ?           ; Variable to store the grade
+msg db "Enter marks (0-100): $"
+f_grade db "Grade: F$"
+d_grade db "Grade: D$"
+c_grade db "Grade: C$"
+b_grade db "Grade: B$"
+a_grade db "Grade: A$"
+aplus_grade db "Grade: A+$"
+
+.code
+main proc
+    ; Initialize the data segment
+    mov ax, @data
+    mov ds, ax
+
+    ; Display message to input marks
+    mov ah, 09h
+    lea dx, msg
+    int 21h
+
+    ; Input marks as a two-digit number
+    mov ah, 01h
+    int 21h            ; Input first digit
+    sub al, '0'
+    mov bl, al 
+            ; Store first digit in BL
+    mov ah, 01h
+    int 21h            ; Input second digit
+    sub al, '0'
+    mov bh, al         ; Store second digit in BH
+
+    ; Calculate marks (convert two-digit input to a single number)
+    mov al, bl
+    mov ah, 0
+    shl ax, 1          ; Multiply BL by 10
+    shl ax, 2
+    add ax, bx         ; Add BL*10 + BH to get the marks
+    mov marks, al      ; Store marks in `marks`
+
+    ; Determine grade
+    cmp al, 50         ; Check if marks < 50
+    jl grade_f
+    cmp al, 60         ; Check if marks < 60
+    jl grade_d
+    cmp al, 70         ; Check if marks < 70
+    jl grade_c
+    cmp al, 80         ; Check if marks < 80
+    jl grade_b
+    cmp al, 90         ; Check if marks < 90
+    jl grade_a
+    jmp grade_aplus    ; Marks >= 90
+
+grade_f:
+    lea dx, f_grade
+    jmp display_grade
+grade_d:
+    lea dx, d_grade
+    jmp display_grade
+grade_c:
+    lea dx, c_grade
+    jmp display_grade
+grade_b:
+    lea dx, b_grade
+    jmp display_grade
+grade_a:
+    lea dx, a_grade
+    jmp display_grade
+grade_aplus:
+    lea dx, aplus_grade
+
+display_grade:
+    ; Display the grade
+    mov ah, 09h
+    int 21h
+
+    ; Exit program
+    mov ah, 4ch
+    int 21h
+main endp
+end main

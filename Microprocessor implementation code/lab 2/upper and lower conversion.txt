@@ -1,0 +1,61 @@
+org 0100h
+.stack
+.data
+    msg db "Enter a character: $"
+    newline db 0Dh, 0Ah, '$'
+.code
+
+main proc
+    ; Setup the data segment
+    mov ax, @data
+    mov ds, ax
+
+    ; Display prompt
+    lea dx, msg
+    mov ah, 9
+    int 21h
+
+    ; Input a character
+    mov ah, 1
+    int 21h
+    mov bl, al ; Store input in BL
+
+    ; Print newline for output readability
+    lea dx, newline
+    mov ah, 9
+    int 21h
+
+    ; Check if input is lowercase (ASCII 'a' to 'z')
+    cmp bl, 'a'
+    jl check_upper  
+    cmp bl, 'z'
+    jg check_upper 
+    sub bl, 32      
+    jmp display
+
+check_upper:
+    ; Check if input is uppercase (ASCII 'A' to 'Z')
+    cmp bl, 'A'
+    jl invalid      
+    cmp bl, 'Z'
+    jg invalid      
+    add bl, 32      
+    jmp display
+
+invalid:
+    ; Invalid input, terminate program
+    mov ah, 4ch
+    int 21h
+
+display:
+    ; Display the converted character
+    mov ah, 2
+    mov dl, bl
+    int 21h
+
+    ; Exit program
+    mov ah, 4ch
+    int 21h
+
+main endp
+end main

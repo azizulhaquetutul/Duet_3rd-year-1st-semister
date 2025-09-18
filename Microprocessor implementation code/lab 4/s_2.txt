@@ -1,0 +1,39 @@
+org 0100h
+.data
+n db 1             
+term db ?          
+result dw 0        
+
+.code 
+main proc
+    ; Initialize data segment
+    mov ax, @data
+    mov ds, ax
+    
+    
+    mov ah, 1
+    int 21h
+    sub al, '0'      
+    mov term, al     
+
+    ; Initialize variables
+    xor ax, ax       
+    xor bx, bx      
+    mov cl, term     
+    mov n, 1        
+
+sum_loop:
+    mov al, n        
+    mul al           
+    add bx, ax      
+    inc n           
+    loop sum_loop    
+
+    ; Store the result
+    mov result, bx
+
+    ; Exit program
+    mov ah, 4ch
+    int 21h
+main endp
+end main

@@ -1,0 +1,39 @@
+
+org 100h
+
+.data
+a db "The value n between 2-9 ",0Dh,0Ah,'$'
+value dw 1,2,3,4,5,6,7,8,9 
+n dw ?
+result dw ?
+
+.code
+    main proc
+        mov ax,@data
+        mov ds,ax
+        
+        mov ah,9
+        lea dx,a
+        int 21h
+         
+        mov ah,1
+        int 21h
+        sub al,48
+        xor cl,cl
+          
+        mov cl,al
+        xor si,si
+        print:
+             mov ax,value[si]
+             inc si 
+             inc si
+             mul ax
+             add result,ax
+             cmp cl,0
+             je exit 
+             loop print
+         exit:
+            mov ah,4ch
+            int 21h
+        main endp
+    end main

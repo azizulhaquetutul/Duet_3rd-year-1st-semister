@@ -1,0 +1,40 @@
+ 
+.model small
+.stack 100h
+.data
+    inputByte db 11011011b 
+    result db ?             
+
+.code
+main proc
+    mov ax,@data
+    mov ds,ax
+    
+    mov al,inputbyte
+    mov ah,al
+    mov cl,8
+    
+    check_p:
+    ror ah,1
+    rol al,1
+    cmp ah,al
+    jne not_p
+    loop check_p
+    
+    mov bl,0aah
+    jmp end
+    
+    not_p:
+    mov bl,00h
+    jmp end
+    
+    end:
+    mov result,bl
+    
+
+    
+    
+    mov ah, 4Ch             
+    int 21h
+main endp
+end main

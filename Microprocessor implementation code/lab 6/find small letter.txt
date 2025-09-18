@@ -1,0 +1,66 @@
+org 100h
+
+.data
+a db "WE aRE DUET STuDsNTS",0Dh,0Ah,'$' 
+nosmallchar db "No small letter",0Dh,0Ah,'$'
+first db 'N'
+second db 'N'
+
+.code
+    main proc
+        mov ax,@data
+        mov ds,ax
+        
+        mov ah,9
+        lea dx,a
+        int 21h
+        xor cx,cx  
+        mov cx,20
+        xor si,si
+        print:
+             mov al,a[si]
+             cmp  al,'a'
+             jge small
+            
+             inc si 
+             loop print
+             cmp cx,0
+             je output
+              
+         small:
+            cmp first,'N'
+            je f 
+            mov second,al
+            inc si
+            loop print
+            cmp cx,0
+            je output
+         
+         f:
+           mov first,al
+           mov second,al 
+           inc si
+           loop print
+          
+         output:
+            cmp first,'N'
+            je nosmall
+            mov ah,2
+            mov dl,first
+            int 21h
+            
+            mov dl,second
+            int 21h
+            
+            mov ah,4ch
+            int 21h  
+            
+         nosmall:
+                mov ah,9
+                lea dx,nosmallchar
+                int 21h
+                mov ah,4ch
+                int 21h
+            
+        main endp
+    end main

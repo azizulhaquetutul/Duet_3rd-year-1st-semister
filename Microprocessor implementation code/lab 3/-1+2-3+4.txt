@@ -1,0 +1,56 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+    N DB ?
+    RESULT DW 0
+    MSG DB "ENTER A NUMBER (2-9): $"
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+
+    LEA DX, MSG
+    MOV AH, 09H
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    SUB AL, '0'
+    MOV N, AL
+
+    CMP AL, 2
+    JB INVALID_INPUT
+    CMP AL, 9
+    JA INVALID_INPUT
+
+    XOR AX, AX
+    XOR BX, BX
+    MOV CL, N
+
+CAL_SEQ:
+    INC BX
+    TEST BX, 1
+    JZ EVEN_TERM
+
+    SUB AX, BX
+    JMP NEXT_ITER
+
+EVEN_TERM:
+    ADD AX, BX
+
+NEXT_ITER:
+    DEC CL
+    JNZ CAL_SEQ
+
+    MOV RESULT, AX
+
+    MOV AH, 4CH
+    INT 21H
+
+INVALID_INPUT:
+    MOV AH, 4CH
+    INT 21H
+
+MAIN ENDP
+END MAIN

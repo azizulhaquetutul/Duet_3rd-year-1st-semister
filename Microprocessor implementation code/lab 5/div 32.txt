@@ -1,0 +1,19 @@
+org 100h
+
+.data
+result dw ?       ; Variable to store the result
+
+.code
+main proc
+    mov ax, 160   ; Example input value (you can change this; must be a multiple of 32)
+
+    ; Divide AX by 32 using a right shift
+    shr ax, 5      ; AX = AX / 32
+
+    ; Store the result in memory
+    mov result, ax ; Save AX (result) in the variable
+
+    ; Program Termination
+    mov ah, 4Ch    ; Terminate program
+    int 21h
+main endp

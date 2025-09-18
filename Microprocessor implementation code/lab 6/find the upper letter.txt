@@ -1,0 +1,70 @@
+org 100h
+
+.data
+a db "WE aRE DUET STuDsNTS",0Dh,0Ah, '$'    
+noupperchar db "No uppercase letter",0Dh,0Ah, '$'
+first db 'N'                                
+second db 'N'                               
+
+.code
+main proc
+    ; Initialize data segment
+    mov ax, @data
+    mov ds, ax
+
+    ; Print the input string
+    mov ah, 9
+    lea dx, a
+    int 21h
+
+    ; Initialize variables
+    xor cx, cx            
+    mov cx, 20            
+    xor si, si            
+
+print:
+    mov al, a[si]        
+    cmp al, 'A'           
+    jl next               
+    cmp al, 'Z'           
+    jg next              
+
+    ; If the character is uppercase
+    cmp first, 'N'        
+    je set_first          
+    mov second, al        
+    jmp next              
+
+set_first:
+    mov first, al         
+    mov second, al         
+    jmp next              
+
+next:
+    inc si                
+    loop print          
+
+output:
+    cmp first, 'N'        
+    je noupper            
+
+    ; Print the first and second uppercase letters
+    mov ah, 2             
+    mov dl, first         
+    int 21h
+    mov dl, second        
+    int 21h
+    jmp exit              ; Exit the program
+
+noupper:
+    ; Print "No uppercase letter"
+    mov ah, 9             
+    lea dx, noupperchar   
+    int 21h
+
+exit:
+    mov ah, 4Ch           ; Exit program
+    int 21h
+
+main endp
+end main

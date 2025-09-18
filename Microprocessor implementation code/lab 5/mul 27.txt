@@ -1,0 +1,33 @@
+org 100h
+
+.data
+result dw ?       ; Variable to store the result
+
+.code
+main proc
+    mov ax, 5     
+
+    ; Step 1: Multiply AX by 16 (2^4)
+    mov bx, ax     
+    shl bx, 4      
+
+    ; Step 2: Multiply AX by 8 (2^3)
+    mov cx, ax     
+    shl cx, 3      
+
+    ; Step 3: Multiply AX by 2 (2^1)
+    mov dx, ax     
+    shl dx, 1      
+
+    ; Step 4: Add results to compute AX * 27
+    add bx, cx     
+    add bx, dx     
+    add bx, ax     
+
+    ; Step 5: Store the result in the variable
+    mov result, bx 
+
+    ; Program Termination
+    mov ah, 4Ch    
+    int 21h
+main endp

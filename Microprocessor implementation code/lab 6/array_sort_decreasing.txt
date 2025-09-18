@@ -1,0 +1,56 @@
+org 100h
+.DATA
+ARR DB 2, 6, 1, 9, 4     ; Array to sort
+.CODE
+MAIN PROC
+    
+    MOV AX, @DATA        
+    MOV DS, AX
+    
+    MOV CX, 4            
+    XOR SI, SI          
+
+    loop1:
+    MOV DI, SI          
+    INC DI               
+
+    loop2:
+    MOV AL, ARR[SI]     
+    MOV DL, ARR[DI]     
+    CMP AL, DL           
+    JL swap              
+
+    next:
+    INC DI               
+    CMP DI, 5            
+    JL loop2             
+
+    INC SI               
+    CMP SI, 4            
+    JL loop1             
+
+    exit:
+    MOV SI, 0            
+    print:
+    MOV DL, ARR[SI]      
+    ADD DL, 30h          
+    MOV AH, 02h          
+    INT 21h              
+
+    MOV DL, ' '          
+    INT 21h
+
+    INC SI               
+    CMP SI, 5            
+    JL print            
+
+    MOV AH, 4Ch          
+    INT 21h
+
+    swap:
+    MOV ARR[SI], DL      
+    MOV ARR[DI], AL
+    JMP next             ; Continue to the next comparison
+
+MAIN ENDP
+END MAIN

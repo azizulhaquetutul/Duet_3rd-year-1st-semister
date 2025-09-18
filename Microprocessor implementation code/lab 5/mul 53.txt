@@ -1,0 +1,33 @@
+org 100h
+
+.data
+result dw ?       ; Variable to store the result
+
+.code
+main proc
+    mov ax, 3     ; Example input value (you can change this)
+
+    ; Step 1: Multiply AX by 32 (2^5)
+    mov bx, ax     ; Copy AX to BX
+    shl bx, 5      ; BX = AX * 32
+
+    ; Step 2: Multiply AX by 16 (2^4)
+    mov cx, ax     ; Copy AX to CX
+    shl cx, 4      ; CX = AX * 16
+
+    ; Step 3: Multiply AX by 4 (2^2)
+    mov dx, ax     ; Copy AX to DX
+    shl dx, 2      ; DX = AX * 4
+
+    ; Step 4: Add all components to calculate AX * 53
+    add bx, cx     ; BX = AX * 32 + AX * 16
+    add bx, dx     ; BX = AX * 32 + AX * 16 + AX * 4
+    add bx, ax     ; BX = AX * 32 + AX * 16 + AX * 4 + AX (AX * 53)
+
+    ; Store the result in memory
+    mov result, bx ; Save BX (result) in the variable
+
+    ; Program Termination
+    mov ah, 4Ch    ; Terminate program
+    int 21h
+main endp

@@ -1,0 +1,54 @@
+org 0100h
+.data
+
+x db "enter frist value : $"
+y db "enter the second vlue : $"
+
+z db "enter result : $"
+
+.code
+
+main proc
+    
+    mov ax,@data
+    mov ds,ax
+    
+                       
+    mov ah,9
+    lea dx,x
+    int 21h
+    
+    mov ah,1
+    int 21h
+    mov bl,al
+    mov x,bl
+    
+    mov ah,9
+    lea dx,y
+    int 21h
+    
+    mov ah,1
+    int 21h
+    mov bh,al 
+    mov y,bh
+    
+    mov bl,x 
+    sub bl,y
+    add bl,48
+    add bl,1
+    mov z,bl
+    
+    mov ah,2
+    mov dl,z
+    int 21h
+    
+    
+    mov ah,4ch
+    int 21h
+    main endp
+end main
+
+ret
+    
+                       
+                       

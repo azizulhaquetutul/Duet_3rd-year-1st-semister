@@ -1,0 +1,44 @@
+org 0100h
+.data
+result dw ?        ; Variable to store the final sum
+msg db "Enter the number of terms (N): $"
+n db ?             
+
+.code
+main proc
+    ; Initialize the data segment
+    mov ax, @data
+    mov ds, ax
+
+    ; Display prompt to user
+    mov ah, 09h
+    lea dx, msg
+    int 21h
+
+    ; Read user input (N)
+    mov ah, 01h
+    int 21h            
+    sub al, '0'        
+    mov n, al          
+
+    ; Initialize Fibonacci variables
+    xor ax, ax         
+    mov bx, 0          
+    mov dx, 1         
+    mov cl, n          
+
+    ; Fibonacci sum calculation
+L1:
+    add ax, bx         
+    add bx, dx         
+    xchg bx, dx        
+    loop L1            
+
+    ; Store the result
+    mov result, ax     
+
+    ; Exit program
+    mov ah, 4Ch
+    int 21h
+main endp
+end main

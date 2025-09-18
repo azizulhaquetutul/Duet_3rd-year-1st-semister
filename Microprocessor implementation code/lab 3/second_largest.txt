@@ -1,0 +1,126 @@
+org 0100h
+.data
+second_large db "Second largest is: $"
+
+.code
+main proc
+    mov ax, @data
+    mov ds, ax
+
+    ; Input three numbers
+    mov ah, 1
+    int 21h
+    mov bl, al       ; First number in BL
+    int 21h
+    mov bh, al       ; Second number in BH
+    int 21h
+    mov cl, al       ; Third number in CL    
+    
+    
+    mov ah,2
+    mov dl,10
+    int 21h
+    mov dl,13
+    int 21h
+    
+    
+    mov ah, 9
+    lea dx, second_large
+    int 21h
+
+
+    ; Find the largest and second-largest
+    cmp bl, bh
+    jge first_pair   ; If BL >= BH, check BL with CL
+    xchg bl, bh      ; Swap BL and BH (so BL is largest so far)
+
+first_pair:
+    cmp bl, cl
+    jge check_second ; If BL >= CL, proceed to find second largest
+    xchg bl, cl      ; Swap BL and CL (so BL is largest)
+
+check_second:
+    cmp bh, cl
+    jge display_bh   ; If BH >= CL, BH is the second largest
+    mov dl, cl       ; Otherwise, CL is the second largest
+    jmp display
+
+display_bh:
+    mov dl, bh       ; BH is the second largest
+
+display:
+    ; Display second-largest number
+    mov ah, 2
+    int 21h
+
+    ; Print message
+
+    ; Exit program
+    mov ah, 4ch
+    int 21h
+
+main endp
+end main
+org 0100h
+.data
+second_large db "Second largest is: $"
+
+.code
+main proc
+    mov ax, @data
+    mov ds, ax
+
+    ; Input three numbers
+    mov ah, 1
+    int 21h
+    mov bl, al       ; First number in BL
+    int 21h
+    mov bh, al       ; Second number in BH
+    int 21h
+    mov cl, al       ; Third number in CL    
+    
+    
+    mov ah,2
+    mov dl,10
+    int 21h
+    mov dl,13
+    int 21h
+    
+    
+    mov ah, 9
+    lea dx, second_large
+    int 21h
+
+
+    ; Find the largest and second-largest
+    cmp bl, bh
+    jge first_pair   ; If BL >= BH, check BL with CL
+    xchg bl, bh      ; Swap BL and BH (so BL is largest so far)
+
+first_pair:
+    cmp bl, cl
+    jge check_second ; If BL >= CL, proceed to find second largest
+    xchg bl, cl      ; Swap BL and CL (so BL is largest)
+
+check_second:
+    cmp bh, cl
+    jge display_bh   ; If BH >= CL, BH is the second largest
+    mov dl, cl       ; Otherwise, CL is the second largest
+    jmp display
+
+display_bh:
+    mov dl, bh       ; BH is the second largest
+
+display:
+    ; Display second-largest number
+    mov ah, 2
+    int 21h
+
+    ; Print message
+
+    ; Exit program
+    mov ah, 4ch
+    int 21h
+
+main endp
+end main
